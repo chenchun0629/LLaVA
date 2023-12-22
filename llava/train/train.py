@@ -29,6 +29,8 @@ import transformers
 from llava.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN
 from torch.utils.data import Dataset
 from llava.train.llava_trainer import LLaVATrainer
+from llava.model.language_model.llava_qwen import LlavaQWenForCausalLM
+from llava.model.language_model.qwen.tokenization_qwen import QWenTokenizer
 
 from llava import conversation as conversation_lib
 from llava.model import *
@@ -791,6 +793,12 @@ def train():
                 cache_dir=training_args.cache_dir,
                 **bnb_model_from_pretrained_args
             )
+        elif 'qwen' in model_args.model_name_or_path.lower():
+            model = LlavaQWenForCausalLM.from_pretrained(
+                model_args.model_name_or_path,
+                cache_dir=training_args.cache_dir,
+                **bnb_model_from_pretrained_args
+            )
         else:
             model = LlavaLlamaForCausalLM.from_pretrained(
                 model_args.model_name_or_path,
@@ -846,6 +854,17 @@ def train():
             model_max_length=training_args.model_max_length,
             padding_side="right"
         )
+    elif 'qwen' in model_args.model_name_or_path.lower():
+        tokenizer = QWenTokenizer.from_pretrained(
+            model_args.model_name_or_path,
+            cache_dir=training_args.cache_dir,
+            model_max_length=training_args.model_max_length,
+            padding_side="right"
+        )
+        tokenizer.pad_token_id = tokenizer.eod_id
+        tokenizer.bos_token_id = tokenizer.eod_id
+        tokenizer.eos_token_id = tokenizer.eod_id
+        tokenizer.unk_token_id = tokenizer.eod_id
     else:
         tokenizer = transformers.AutoTokenizer.from_pretrained(
             model_args.model_name_or_path,
@@ -886,7 +905,9 @@ def train():
         model.config.image_aspect_ratio = data_args.image_aspect_ratio
         model.config.tokenizer_padding_side = tokenizer.padding_side
         model.config.tokenizer_model_max_length = tokenizer.model_max_length
-
+        
+        model.config.tune_mm_mlp_adapter = model_args.tune_mm_mlp_adapter
+        training_args._frozen = False
         model.config.tune_mm_mlp_adapter = training_args.tune_mm_mlp_adapter = model_args.tune_mm_mlp_adapter
         if model_args.tune_mm_mlp_adapter:
             model.requires_grad_(False)
