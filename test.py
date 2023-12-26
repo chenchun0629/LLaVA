@@ -1,13 +1,15 @@
-# from llava.model.language_model.qwen.tokenization_qwen import QWenTokenizer
+from llava.model.language_model.qwen.tokenization_qwen import QWenTokenizer
 
 
-# tokenizer = QWenTokenizer.from_pretrained("/data/jupyter/user/cc/llm_models/Qwen-7B-Chat")
+tokenizer = QWenTokenizer.from_pretrained("/data/jupyter/user/cc/llm_models/Qwen-7B-Chat")
 # tokenizer.pad_token_id = tokenizer.eod_id
 # tokenizer.bos_token_id = tokenizer.eod_id
 # tokenizer.eos_token_id = tokenizer.eod_id
 
-# print(tokenizer)
-
+print(tokenizer)
+print(tokenizer.convert_ids_to_tokens([151643]))
+print(tokenizer.convert_ids_to_tokens([tokenizer.eod_id]))
+print(dir(tokenizer))
 # import transformers
 
 
@@ -20,12 +22,12 @@
 
 # x = DeepSpeedZeroOffloadParamConfig()
 
-from transformers import ChineseCLIPModel, ChineseCLIPProcessor, CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
+# from transformers import ChineseCLIPModel, ChineseCLIPProcessor, CLIPVisionModel, CLIPImageProcessor, CLIPVisionConfig
 
-m = ChineseCLIPModel.from_pretrained('OFA-Sys/chinese-clip-vit-large-patch14-336px')
-p = ChineseCLIPProcessor.from_pretrained('OFA-Sys/chinese-clip-vit-large-patch14-336px')
+# m = ChineseCLIPModel.from_pretrained('OFA-Sys/chinese-clip-vit-large-patch14-336px')
+# p = ChineseCLIPProcessor.from_pretrained('OFA-Sys/chinese-clip-vit-large-patch14-336px')
 
-print(m)
-print("------------")
-print(p)
-print("============")
+# print(m)
+# print("------------")
+# print(p)
+# print("============")

@@ -2,7 +2,7 @@
 
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path /data/jupyter/user/cc/llm_models/vicuna-7b-v1.5 \
+    --model_name_or_path /data/jupyter/user/cc/llm_models/Yi-6B-Chat \
     --version plain \
     --data_path /data/jupyter/user/cc/llm_datasets/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json \
     --image_folder /data/jupyter/user/cc/llm_datasets/LLaVA-Pretrain \
@@ -13,7 +13,7 @@ deepspeed llava/train/train_mem.py \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --bf16 True \
-    --output_dir ./checkpoints/vicuna-v1.5-7b-chinese-clip-pretrain \
+    --output_dir ./checkpoints/yi-6b-chinese-clip-pretrain \
     --num_train_epochs 1 \
     --per_device_train_batch_size 8 \
     --per_device_eval_batch_size 1 \

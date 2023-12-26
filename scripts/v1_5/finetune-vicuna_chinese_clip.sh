@@ -1,28 +1,30 @@
 #!/bin/bash
 
 deepspeed llava/train/train_mem.py \
-    --deepspeed ./scripts/zero2.json \
+    --deepspeed ./scripts/zero3_offload_yi.json \
     --model_name_or_path /data/jupyter/user/cc/llm_models/vicuna-7b-v1.5 \
-    --version plain \
-    --data_path /data/jupyter/user/cc/llm_datasets/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json \
-    --image_folder /data/jupyter/user/cc/llm_datasets/LLaVA-Pretrain \
+    --version v1 \
+    --data_path /data/jupyter/user/cc/llm_datasets/LLaVA-Visual-Instruction-Tuning/llava_v1_5_mix665k.coco.json \
+    --image_folder /data/jupyter/user/cc/llm_datasets/LLaVA-Visual-Instruction-Tuning \
     --vision_tower OFA-Sys/chinese-clip-vit-large-patch14-336px \
+    --pretrain_mm_mlp_adapter ./checkpoints/vicuna-v1.5-7b-chinese-clip-pretrain/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
-    --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
+    --image_aspect_ratio pad \
+    --group_by_modality_length True \
     --bf16 True \
-    --output_dir ./checkpoints/vicuna-v1.5-7b-chinese-clip-pretrain \
+    --output_dir ./checkpoints/vicuna-v1.5-7b-chinese-clip-finetune \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 8 \
+    --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 4 \
+    --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
-    --save_steps 24000 \
+    --save_steps 50000 \
     --save_total_limit 1 \
-    --learning_rate 1e-3 \
+    --learning_rate 2e-5 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
