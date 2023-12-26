@@ -2,10 +2,10 @@
 
 deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero2.json \
-    --model_name_or_path /data/jupyter/user/cc/llm_models/Yi-6B-Chat \
+    --model_name_or_path /workspace/llm_models/Yi-6B-Chat \
     --version plain \
-    --data_path /data/jupyter/user/cc/llm_datasets/LLaVA-Pretrain/blip_laion_cc_sbu_558k.json \
-    --image_folder /data/jupyter/user/cc/llm_datasets/LLaVA-Pretrain \
+    --data_path /workspace/llm_datasets/LLaVA-Pretrain/pretrain_data.json \
+    --image_folder /workspace/llm_datasets/LLaVA-Pretrain/ \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --mm_projector_type mlp2x_gelu \
     --tune_mm_mlp_adapter True \
@@ -13,11 +13,11 @@ deepspeed llava/train/train_mem.py \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --bf16 True \
-    --output_dir ./checkpoints/llava-yi-6b-pretrain \
+    --output_dir /workspace/llm_models/checkpoints/llava-yi-6b-pretrain \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 2 \
+    --per_device_train_batch_size 48 \
     --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 16 \
+    --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 24000 \
