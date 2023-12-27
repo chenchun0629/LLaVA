@@ -1,13 +1,13 @@
 #!/bin/bash
 # --vision_tower openai/clip-vit-large-patch14-336 \
 deepspeed llava/train/train_mem.py \
-    --deepspeed ./scripts/zero3_offload_yi.json \
-    --model_name_or_path /data/jupyter/user/cc/llm_models/Yi-6B-Chat \
+    --deepspeed ./scripts/zero3.json \
+    --model_name_or_path /workspace/llm_models/Yi-6B-Chat \
     --version mpt \
-    --data_path /data/jupyter/user/cc/llm_datasets/LLaVA-Visual-Instruction-Tuning/llava_v1_5_mix665k.coco.json \
-    --image_folder /data/jupyter/user/cc/llm_datasets/LLaVA-Visual-Instruction-Tuning \
-    --vision_tower /root/.cache/huggingface/hub/models--openai--clip-vit-large-patch14-336/snapshots/ce19dc912ca5cd21c8a653c79e251e808ccabcd1/ \
-    --pretrain_mm_mlp_adapter /data/jupyter/user/cc/LLaVA/checkpoints/llava-yi-6b-pretrain/mm_projector.bin \
+    --data_path /workspace/llm_datasets/Visual-Instruction-Tuning/finetune_data_chinese-5k.json \
+    --image_folder /workspace/llm_datasets/Visual-Instruction-Tuning \
+    --vision_tower openai/clip-vit-large-patch14-336 \
+    --pretrain_mm_mlp_adapter /workspace/llm_models/checkpoints/llava-yi-6b-pretrain/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
@@ -15,7 +15,7 @@ deepspeed llava/train/train_mem.py \
     --image_aspect_ratio pad \
     --group_by_modality_length True \
     --bf16 True \
-    --output_dir checkpoints/llava-yi-6b-finetune/ \
+    --output_dir /workspace/llm_models/checkpoints/llava-yi-6b-finetune-v1 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
