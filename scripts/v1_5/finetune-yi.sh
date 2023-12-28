@@ -4,7 +4,7 @@ deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero3.json \
     --model_name_or_path /workspace/llm_models/Yi-6B-Chat \
     --version mpt \
-    --data_path /workspace/llm_datasets/Visual-Instruction-Tuning/finetune_data_chinese-5k.json \
+    --data_path /workspace/llm_datasets/Visual-Instruction-Tuning/finetune_data_chinese.json \
     --image_folder /workspace/llm_datasets/Visual-Instruction-Tuning \
     --vision_tower openai/clip-vit-large-patch14-336 \
     --pretrain_mm_mlp_adapter /workspace/llm_models/checkpoints/llava-yi-6b-pretrain/mm_projector.bin \
@@ -15,11 +15,11 @@ deepspeed llava/train/train_mem.py \
     --image_aspect_ratio pad \
     --group_by_modality_length True \
     --bf16 True \
-    --output_dir /workspace/llm_models/checkpoints/llava-yi-6b-finetune-v1 \
+    --output_dir /workspace/llm_models/checkpoints/llava-yi-6b-finetune-v2 \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 1 \
+    --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 1 \
-    --gradient_accumulation_steps 16 \
+    --gradient_accumulation_steps 4 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
     --save_steps 50000 \
